@@ -73,11 +73,12 @@ public class ClienteDAO {
 		Cliente cliente = new Cliente();
 		
 		
-		String consulta = "SELECT * FROM cliente";
+		String consulta = "SELECT * FROM cliente WHERE id = ?";
 		resultado = null;
 		stm = null;
 		try{
 			stm = Conexao.getConexao().prepareStatement(consulta);
+			stm.setInt(1, id);
 			resultado = stm.executeQuery();
 			
 			resultado.next();
@@ -88,7 +89,6 @@ public class ClienteDAO {
 			cliente.setPeso(resultado.getString("peso"));
 			cliente.setSexo(resultado.getString("sexo"));
 			cliente.setNvAtividade(resultado.getString("nvAtividade"));
-			System.out.println(cliente.getNvAtividade());
 			
 			Conexao.fecharConexao();
 		}catch(Exception erro){

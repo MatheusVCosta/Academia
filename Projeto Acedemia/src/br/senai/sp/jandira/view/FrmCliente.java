@@ -59,16 +59,16 @@ public class FrmCliente extends JFrame {
 	public void setComboAtividade(String sexo){
 		this.comboAtividade.setToolTipText(sexo);
 		
-		if(comboAtividade.equals("Sedentário")){
+		if(sexo.equals("Sedentário")){
 			comboAtividade.setSelectedIndex(0);
 			
-		}else if(comboAtividade.equals("Levemente Ativo")){
+		}else if(sexo.equals("Levemente Ativo")){
 			comboAtividade.setSelectedIndex(1);
 			
-		}else if(comboAtividade.equals("Moderamente Ativo")){
+		}else if(sexo.equals("Moderamente Ativo")){
 			comboAtividade.setSelectedIndex(2);
 			
-		}else if(comboAtividade.equals("Bastante Ativo")){
+		}else if(sexo.equals("Bastante Ativo")){
 			comboAtividade.setSelectedIndex(3);
 			
 		}else{

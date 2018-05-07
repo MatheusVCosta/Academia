@@ -4,8 +4,8 @@ public class Cliente {
 	private int id;
 	private String nome;
 	private String dtNasc;
-	private String peso;
-	private String altura;
+	private int peso;
+	private int altura;
 	private String sexo;
 	private String nvAtividade;
 
@@ -33,19 +33,19 @@ public class Cliente {
 		this.dtNasc = dtNasc;
 	}
 
-	public String getPeso() {
+	public int getPeso() {
 		return peso;
 	}
 
-	public void setPeso(String peso) {
+	public void setPeso(int peso) {
 		this.peso = peso;
 	}
 
-	public String getAltura() {
+	public int getAltura() {
 		return altura;
 	}
 
-	public void setAltura(String altura) {
+	public void setAltura(int altura) {
 		this.altura = altura;
 	}
 

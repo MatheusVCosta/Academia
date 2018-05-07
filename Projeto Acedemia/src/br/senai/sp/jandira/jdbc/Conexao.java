@@ -15,7 +15,9 @@ public class Conexao {
 		con = null;
 		try{
 			Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");//CAMINHO DO DRIVER DO UcanAccess
-			String dbURL = "jdbc:ucanaccess://C:/Users/User/Desktop/academia.accdb";
+			
+			String dbURL = "jdbc:ucanaccess://C:/Users/17259221/Desktop/academia.accdb";//Arquivo SENAI
+			//String dbURL = "jdbc:ucanaccess://C:/Users/User/Desktop/academia.accdb";//Arquivo CASA
 			con = DriverManager.getConnection(dbURL);
 			
 			

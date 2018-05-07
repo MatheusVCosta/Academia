@@ -181,10 +181,11 @@ public class FrmAcademia extends JFrame {
 			Cliente cliente = new Cliente();
 			
 			cliente = clienteDAO.getCliente(id);
+			
 			frmCliente.setTxtId(cliente.getId());
 			frmCliente.setTxtNome(cliente.getNome());
-			frmCliente.setTxtAltura(cliente.getAltura());
-			frmCliente.setTxtPeso(cliente.getPeso());
+			frmCliente.setTxtAltura(String.valueOf(cliente.getAltura()));
+			frmCliente.setTxtPeso(String.valueOf(cliente.getPeso()));
 			frmCliente.setComboAtividade(cliente.getNvAtividade());
 			
 			frmCliente.setTitle(titulo);
