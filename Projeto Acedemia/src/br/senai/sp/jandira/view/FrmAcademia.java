@@ -10,46 +10,65 @@ import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import br.senai.sp.jandira.cliente.Cliente;
+import br.senai.sp.jandira.dao.ClienteDAO;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
 
 public class FrmAcademia extends JFrame {
 
 	private JPanel painelPrincipal;
-	private final JPanel painelTitulo = new JPanel();
+	private JPanel painelTitulo = new JPanel();
 	private JTable tabelaDados;
-
-	public FrmAcademia() {
+	private JPanel painelDados;
+	private FrmCliente cliente;
+	
+	public FrmAcademia(String titulo) {
+		
+		setTitle(titulo);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 542);
 		painelPrincipal = new JPanel();
-		painelPrincipal.setBackground(Color.GRAY);
+		painelPrincipal.setBackground(new Color(0, 191, 255));
 		painelPrincipal.setForeground(Color.LIGHT_GRAY);
 		painelPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(painelPrincipal);
 		painelPrincipal.setLayout(null);
-		painelTitulo.setBackground(Color.DARK_GRAY);
-		painelTitulo.setBounds(0, 0, 434, 88);
+		painelTitulo.setBackground(new Color(0, 191, 255));
+		painelTitulo.setBounds(10, 11, 414, 77);
 		painelPrincipal.add(painelTitulo);
 		painelTitulo.setLayout(null);
 		
 		JLabel lblTitulo = new JLabel("Academia");
+		lblTitulo.setBackground(new Color(0, 191, 255));
+		lblTitulo.setForeground(new Color(255, 255, 255));
+		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitulo.setIcon(new ImageIcon(FrmAcademia.class.getResource("/br/senai/sp/jandira/imagens/titulo.png")));
 		lblTitulo.setFont(new Font("Berlin Sans FB Demi", Font.PLAIN, 30));
-		lblTitulo.setBounds(82, 11, 260, 66);
+		lblTitulo.setBounds(0, 0, 414, 77);
 		painelTitulo.add(lblTitulo);
 		
-		JPanel painelDados = new JPanel();
+		painelDados = new JPanel();
+		painelDados.setBackground(new Color(220, 220, 220));
 		painelDados.setBounds(10, 96, 414, 320);
 		painelPrincipal.add(painelDados);
 		painelDados.setLayout(null);
 		
-		JScrollPane scrollTabela = new JScrollPane();
-		scrollTabela.setBounds(0, 0, 414, 320);
+		//CRIANDO A TABELA
+		criarTabela();
+		
+		/*JScrollPane scrollTabela = new JScrollPane();
+		scrollTabela.setBounds(10, 11, 394, 298);
 		painelDados.add(scrollTabela);
 		
 		tabelaDados = new JTable();
@@ -63,12 +82,11 @@ public class FrmAcademia extends JFrame {
 			new String[] {
 				"Id", "Cliente"
 			}
-		));
-		tabelaDados.getColumnModel().getColumn(0).setPreferredWidth(33);
-		tabelaDados.getColumnModel().getColumn(1).setPreferredWidth(334);
-		scrollTabela.setViewportView(tabelaDados);
+		));*/
+		
 		
 		JPanel painelBotoes = new JPanel();
+		painelBotoes.setBackground(new Color(220, 220, 220));
 		painelBotoes.setBounds(10, 424, 414, 69);
 		painelPrincipal.add(painelBotoes);
 		painelBotoes.setLayout(null);
@@ -98,20 +116,84 @@ public class FrmAcademia extends JFrame {
 		btnNovoContato.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				FrmCliente cliente = new FrmCliente("Adicionar");
-				cliente.setVisible(true);
 			}
 		});
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				FrmCliente cliente = new FrmCliente("Editar");
-				cliente.setVisible(true);
+				mostrarCliente("EDITAR");
 			}
 		});
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				FrmCliente cliente = new FrmCliente("Excluir");
-				cliente.setVisible(true);
 			}
 		});
+	}
+	
+	public void criarTabela(){
+		JScrollPane scrollTabela = new JScrollPane();
+		scrollTabela.setBounds(8,10,400,305);
+		painelDados.add(scrollTabela);
+		
+		tabelaDados = new JTable();
+		
+		ArrayList<Cliente> clientes = new ArrayList<>();
+		ClienteDAO dao = new ClienteDAO();
+		clientes = dao.getListaCliente();
+		
+		DefaultTableModel modeloTabela = new DefaultTableModel(){
+			public boolean isCellEditable(int row, int col){//TRAVAR A EDIÇÃO DA TABELA
+				return false;
+			}
+		};
+			
+		String [] nomeColuna = {"ID", "Cliente"};
+		modeloTabela.setColumnIdentifiers(nomeColuna);
+		
+		Object[] linha = new Object[2];
+		for(Cliente cliente: clientes){
+			linha [0] = cliente.getId();
+			linha [1] = cliente.getNome();
+			modeloTabela.addRow(linha);
+		}
+		
+		
+		tabelaDados.setModel(modeloTabela);
+		
+		tabelaDados.getTableHeader().setReorderingAllowed(false);//TRAVAR A MOVIMENTÇÃO DAS COLUNAS
+		
+		tabelaDados.getColumnModel().getColumn(0).setPreferredWidth(10);
+		tabelaDados.getColumnModel().getColumn(0).setResizable(false);
+		
+		tabelaDados.getColumnModel().getColumn(1).setPreferredWidth(230);
+		tabelaDados.getColumnModel().getColumn(1).setResizable(false);
+		
+		scrollTabela.setViewportView(tabelaDados);
+		tabelaDados.setColumnSelectionAllowed(false);
+		
+	}
+	public void mostrarCliente(String titulo){
+		try{
+			FrmCliente frmCliente = new FrmCliente(titulo);
+			int linha = tabelaDados.getSelectedRow();
+			int id = (int) tabelaDados.getValueAt(linha, 0);
+			ClienteDAO clienteDAO = new ClienteDAO();
+			Cliente cliente = new Cliente();
+			
+			cliente = clienteDAO.getCliente(id);
+			frmCliente.setTxtId(cliente.getId());
+			frmCliente.setTxtNome(cliente.getNome());
+			frmCliente.setTxtAltura(cliente.getAltura());
+			frmCliente.setTxtPeso(cliente.getPeso());
+			frmCliente.setComboAtividade(cliente.getNvAtividade());
+			
+			frmCliente.setTitle(titulo);
+			frmCliente.setVisible(true);
+			frmCliente.setResizable(false);
+			
+		}catch(Exception erro){
+			System.out.println(erro);
+			JOptionPane.showMessageDialog(null, "Por favor selecione um contato para editar", "Erro", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 }

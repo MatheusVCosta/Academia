@@ -22,9 +22,10 @@ import javax.swing.JRadioButton;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextArea;
+import java.awt.SystemColor;
+import javax.swing.SwingConstants;
 
 public class FrmCliente extends JFrame {
-
 
 	private JPanel painelPrincipal;
 	private final JPanel painelTitulo = new JPanel();
@@ -33,159 +34,216 @@ public class FrmCliente extends JFrame {
 	private JTextField txtPeso;
 	private JTextField txtAltura;
 	private JTextField txtTmb;
-	private JTextField textField;
+	private JTextField txtFMC;
+	private JComboBox comboAtividade;
 
-	
+	public void setPainelPrincipal(JPanel painelPrincipal) {
+		this.painelPrincipal = painelPrincipal;
+	}
+
+	public void setTxtId(int id) {
+		this.txtId.setText(String.valueOf(id));;
+	}
+
+	public void setTxtNome(String nome) {
+		this.txtNome.setText(nome);
+	}
+
+	public void setTxtPeso(String peso) {
+		this.txtPeso.setText(peso);
+	}
+
+	public void setTxtAltura(String altura) {
+		this.txtAltura.setText(altura);
+	}
+	public void setComboAtividade(String sexo){
+		this.comboAtividade.setToolTipText(sexo);
+		
+		if(comboAtividade.equals("Sedentário")){
+			comboAtividade.setSelectedIndex(0);
+			
+		}else if(comboAtividade.equals("Levemente Ativo")){
+			comboAtividade.setSelectedIndex(1);
+			
+		}else if(comboAtividade.equals("Moderamente Ativo")){
+			comboAtividade.setSelectedIndex(2);
+			
+		}else if(comboAtividade.equals("Bastante Ativo")){
+			comboAtividade.setSelectedIndex(3);
+			
+		}else{
+			comboAtividade.setSelectedIndex(4);
+		}
+		
+		
+		
+	}
+
 	public FrmCliente(String titulo) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		setBounds(100, 100, 436, 612);
 		painelPrincipal = new JPanel();
-		painelPrincipal.setBackground(Color.GRAY);
+		painelPrincipal.setBackground(new Color(0, 191, 255));
 		painelPrincipal.setForeground(Color.LIGHT_GRAY);
 		painelPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(painelPrincipal);
 		painelPrincipal.setLayout(null);
-		painelTitulo.setBackground(Color.DARK_GRAY);
-		painelTitulo.setBounds(0, 0, 418, 88);
+		painelTitulo.setBackground(new Color(0, 191, 255));
+		painelTitulo.setBounds(10, 11, 398, 78);
 		painelPrincipal.add(painelTitulo);
 		painelTitulo.setLayout(null);
-		
+
 		JLabel lblOperacao = new JLabel(titulo);
+		lblOperacao.setBackground(new Color(0, 191, 255));
+		lblOperacao.setHorizontalAlignment(SwingConstants.CENTER);
+		lblOperacao.setForeground(new Color(248, 248, 255));
 		lblOperacao.setIcon(new ImageIcon(FrmAcademia.class.getResource("/br/senai/sp/jandira/imagens/titulo.png")));
 		lblOperacao.setFont(new Font("Berlin Sans FB Demi", Font.PLAIN, 30));
-		lblOperacao.setBounds(82, 11, 260, 66);
+		lblOperacao.setBounds(0, 0, 398, 78);
 		painelTitulo.add(lblOperacao);
-		
+
 		JPanel painelBotoes = new JPanel();
+		painelBotoes.setBackground(new Color(220, 220, 220));
 		painelBotoes.setBounds(10, 491, 398, 69);
 		painelPrincipal.add(painelBotoes);
 		painelBotoes.setLayout(null);
-		
+
 		JButton btnNovoContato = new JButton("");
+		btnNovoContato.setBackground(new Color(211, 211, 211));
 		btnNovoContato.setToolTipText("Salvar as informa\u00E7\u00F5es do cliente");
 		btnNovoContato.setIcon(new ImageIcon(FrmCliente.class.getResource("/br/senai/sp/jandira/imagens/save.png")));
 		btnNovoContato.setBounds(10, 11, 83, 47);
 		painelBotoes.add(btnNovoContato);
-		
+
 		JButton btnSair = new JButton("");
+		btnSair.setBackground(new Color(211, 211, 211));
 		btnSair.setToolTipText("Sair");
 		btnSair.setIcon(new ImageIcon(FrmAcademia.class.getResource("/br/senai/sp/jandira/imagens/sair.png")));
 		btnSair.setBounds(322, 11, 65, 47);
 		painelBotoes.add(btnSair);
-		
-		JPanel panel = new JPanel();
-		panel.setBounds(10, 99, 398, 210);
-		painelPrincipal.add(panel);
-		panel.setLayout(null);
-		
+
+		JPanel painelDados = new JPanel();
+		painelDados.setBackground(new Color(220, 220, 220));
+		painelDados.setBounds(10, 99, 398, 210);
+		painelPrincipal.add(painelDados);
+		painelDados.setLayout(null);
+
 		JLabel lblId = new JLabel("Id:");
 		lblId.setBounds(10, 21, 46, 14);
-		panel.add(lblId);
-		
+		painelDados.add(lblId);
+
 		txtId = new JTextField();
+		txtId.setEditable(false);
 		txtId.setBounds(30, 18, 73, 20);
-		panel.add(txtId);
+		painelDados.add(txtId);
 		txtId.setColumns(10);
-		
+
 		JLabel lblNome = new JLabel("Nome:");
-		lblNome.setBounds(115, 21, 46, 14);
-		panel.add(lblNome);
-		
+		lblNome.setBounds(115, 21, 39, 14);
+		painelDados.add(lblNome);
+
 		txtNome = new JTextField();
-		txtNome.setBounds(150, 18, 241, 20);
-		panel.add(txtNome);
+		txtNome.setBounds(164, 18, 227, 20);
+		painelDados.add(txtNome);
 		txtNome.setColumns(10);
-		
+
 		JLabel lblDataDeNascimento = new JLabel("Data de nascimento:");
-		lblDataDeNascimento.setBounds(10, 63, 109, 14);
-		panel.add(lblDataDeNascimento);
-		
+		lblDataDeNascimento.setBounds(10, 52, 122, 14);
+		painelDados.add(lblDataDeNascimento);
+
 		JFormattedTextField txtDtNasc = new JFormattedTextField();
-		txtDtNasc.setBounds(129, 60, 73, 20);
-		panel.add(txtDtNasc);
-		
+		txtDtNasc.setText("/ /");
+		txtDtNasc.setBounds(129, 49, 65, 20);
+		painelDados.add(txtDtNasc);
+
 		JLabel lblPeso = new JLabel("Peso:");
-		lblPeso.setBounds(212, 63, 39, 14);
-		panel.add(lblPeso);
-		
+		lblPeso.setBounds(204, 52, 35, 14);
+		painelDados.add(lblPeso);
+
 		txtPeso = new JTextField();
-		txtPeso.setBounds(241, 60, 92, 20);
-		panel.add(txtPeso);
+		txtPeso.setBounds(240, 49, 92, 20);
+		painelDados.add(txtPeso);
 		txtPeso.setColumns(10);
-		
+
 		JLabel lblAltura = new JLabel("Altura:");
-		lblAltura.setBounds(10, 94, 39, 14);
-		panel.add(lblAltura);
-		
+		lblAltura.setBounds(10, 80, 39, 14);
+		painelDados.add(lblAltura);
+
 		txtAltura = new JTextField();
-		txtAltura.setBounds(48, 91, 86, 20);
-		panel.add(txtAltura);
+		txtAltura.setBounds(54, 77, 78, 20);
+		painelDados.add(txtAltura);
 		txtAltura.setColumns(10);
-		
+
 		JLabel lblCm = new JLabel("cm");
-		lblCm.setBounds(142, 94, 21, 14);
-		panel.add(lblCm);
-		
+		lblCm.setBounds(142, 80, 21, 14);
+		painelDados.add(lblCm);
+
 		JLabel lblKg = new JLabel("kg");
-		lblKg.setBounds(343, 63, 46, 14);
-		panel.add(lblKg);
-		
+		lblKg.setBounds(342, 52, 21, 14);
+		painelDados.add(lblKg);
+
 		JLabel lblSexo = new JLabel("Sexo:");
-		lblSexo.setBounds(173, 94, 39, 14);
-		panel.add(lblSexo);
-		
+		lblSexo.setBounds(169, 80, 39, 14);
+		painelDados.add(lblSexo);
+
 		JRadioButton rdFeminino = new JRadioButton("Feminino");
-		rdFeminino.setBounds(222, 90, 86, 23);
-		panel.add(rdFeminino);
-		
+		rdFeminino.setBackground(new Color(220, 220, 220));
+		rdFeminino.setBounds(214, 76, 86, 23);
+		painelDados.add(rdFeminino);
+
 		JRadioButton rdMasculino = new JRadioButton("Masculino");
-		rdMasculino.setBounds(305, 90, 86, 23);
-		panel.add(rdMasculino);
-		
+		rdMasculino.setBackground(new Color(220, 220, 220));
+		rdMasculino.setBounds(305, 76, 86, 23);
+		painelDados.add(rdMasculino);
+
 		JLabel lblNvelDeAtividade = new JLabel("N\u00EDvel de Atividade:");
-		lblNvelDeAtividade.setBounds(10, 130, 106, 14);
-		panel.add(lblNvelDeAtividade);
-		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Sedent\u00E1rio", "Levemente Ativo", "Moderadamente Ativo", "Bastante Ativo", "Muito Ativo"}));
-		comboBox.setBounds(113, 127, 275, 20);
-		panel.add(comboBox);
-		
+		lblNvelDeAtividade.setBounds(10, 130, 104, 14);
+		painelDados.add(lblNvelDeAtividade);
+
+		comboAtividade = new JComboBox();
+		comboAtividade.setModel(new DefaultComboBoxModel(new String[] { "Sedentário", "Levemente Ativo",
+				"Moderadamente Ativo", "Bastante Ativo", "Muito Ativo" }));
+		comboAtividade.setBounds(115, 127, 273, 20);
+		painelDados.add(comboAtividade);
+
 		JButton btnNewButton = new JButton("");
+		btnNewButton.setBackground(new Color(211, 211, 211));
 		btnNewButton.setToolTipText("Calcular IMC, TMB e FCM");
-		btnNewButton.setIcon(new ImageIcon(FrmCliente.class.getResource("/br/senai/sp/jandira/imagens/if_calc_42174.png")));
+		btnNewButton
+				.setIcon(new ImageIcon(FrmCliente.class.getResource("/br/senai/sp/jandira/imagens/if_calc_42174.png")));
 		btnNewButton.setBounds(161, 158, 78, 41);
-		panel.add(btnNewButton);
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(10, 320, 398, 160);
-		painelPrincipal.add(panel_1);
-		panel_1.setLayout(null);
-		
+		painelDados.add(btnNewButton);
+
+		JPanel painelResult = new JPanel();
+		painelResult.setBackground(new Color(220, 220, 220));
+		painelResult.setBounds(10, 320, 398, 160);
+		painelPrincipal.add(painelResult);
+		painelResult.setLayout(null);
+
 		JLabel lblImc = new JLabel("IMC:");
 		lblImc.setBounds(10, 11, 46, 14);
-		panel_1.add(lblImc);
-		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(10, 27, 378, 81);
-		panel_1.add(textArea);
-		
+		painelResult.add(lblImc);
+
+		JTextArea txtAreaIMC = new JTextArea();
+		txtAreaIMC.setBounds(10, 27, 378, 81);
+		painelResult.add(txtAreaIMC);
+
 		JLabel lblTmb = new JLabel("TMB:");
 		lblTmb.setBounds(10, 123, 33, 14);
-		panel_1.add(lblTmb);
-		
+		painelResult.add(lblTmb);
+
 		txtTmb = new JTextField();
 		txtTmb.setBounds(41, 120, 86, 20);
-		panel_1.add(txtTmb);
+		painelResult.add(txtTmb);
 		txtTmb.setColumns(10);
-		
+
 		JLabel lblFcm = new JLabel("FCM:");
 		lblFcm.setBounds(267, 123, 33, 14);
-		panel_1.add(lblFcm);
-		
-		textField = new JTextField();
-		textField.setBounds(302, 119, 86, 20);
-		panel_1.add(textField);
-		textField.setColumns(10);
+		painelResult.add(lblFcm);
+
+		txtFMC = new JTextField();
+		txtFMC.setBounds(302, 119, 86, 20);
+		painelResult.add(txtFMC);
+		txtFMC.setColumns(10);
 	}
 }
