@@ -37,7 +37,7 @@ public class FrmAcademia extends JFrame {
 		
 		setTitle(titulo);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 542);
+		setBounds(100, 100, 440, 540);
 		painelPrincipal = new JPanel();
 		painelPrincipal.setBackground(new Color(0, 191, 255));
 		painelPrincipal.setForeground(Color.LIGHT_GRAY);
@@ -115,7 +115,10 @@ public class FrmAcademia extends JFrame {
 		
 		btnNovoContato.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				FrmCliente cliente = new FrmCliente("Adicionar");
+				FrmCliente cliente = new FrmCliente("ADICIONAR");
+				cliente.setVisible(true);
+				cliente.setResizable(false);
+				
 			}
 		});
 		btnEditar.addActionListener(new ActionListener() {
@@ -184,9 +187,11 @@ public class FrmAcademia extends JFrame {
 			
 			frmCliente.setTxtId(cliente.getId());
 			frmCliente.setTxtNome(cliente.getNome());
-			frmCliente.setTxtAltura(String.valueOf(cliente.getAltura()));
-			frmCliente.setTxtPeso(String.valueOf(cliente.getPeso()));
+			frmCliente.setTxtAltura(cliente.getAltura());
+			frmCliente.setTxtPeso(cliente.getPeso());
 			frmCliente.setComboAtividade(cliente.getNvAtividade());
+			frmCliente.setRdSexo(cliente.getSexo());
+			frmCliente.setTxtDtNasc(cliente.getDtNasc());
 			
 			frmCliente.setTitle(titulo);
 			frmCliente.setVisible(true);

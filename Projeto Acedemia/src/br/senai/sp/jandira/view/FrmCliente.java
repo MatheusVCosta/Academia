@@ -1,11 +1,14 @@
 package br.senai.sp.jandira.view;
 
 import java.awt.BorderLayout;
+import java.awt.Button;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -16,27 +19,40 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
+import javax.xml.crypto.Data;
+
+import br.senai.sp.jandira.cliente.Cliente;
+import br.senai.sp.jandira.dao.ClienteDAO;
+
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField;
 import javax.swing.JRadioButton;
 import javax.swing.JComboBox;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextArea;
 import java.awt.SystemColor;
 import javax.swing.SwingConstants;
 
 public class FrmCliente extends JFrame {
-
 	private JPanel painelPrincipal;
-	private final JPanel painelTitulo = new JPanel();
+	private JPanel painelTitulo = new JPanel();
 	private JTextField txtId;
 	private JTextField txtNome;
 	private JTextField txtPeso;
 	private JTextField txtAltura;
 	private JTextField txtTmb;
 	private JTextField txtFMC;
+	private JFormattedTextField txtDtNasc;
 	private JComboBox comboAtividade;
-
+	private JRadioButton rdMasculino;
+	private JRadioButton rdFeminino;
+	
+	public void setTxtDtNasc(String data){
+		this.txtDtNasc.setText(data);
+	}
+	
 	public void setPainelPrincipal(JPanel painelPrincipal) {
 		this.painelPrincipal = painelPrincipal;
 	}
@@ -56,32 +72,46 @@ public class FrmCliente extends JFrame {
 	public void setTxtAltura(String altura) {
 		this.txtAltura.setText(altura);
 	}
-	public void setComboAtividade(String sexo){
-		this.comboAtividade.setToolTipText(sexo);
+	public void setComboAtividade(String nivel){
+		this.comboAtividade.setToolTipText(nivel);
 		
-		if(sexo.equals("Sedentário")){
+		if(nivel.equals("Sedentário")){
 			comboAtividade.setSelectedIndex(0);
 			
-		}else if(sexo.equals("Levemente Ativo")){
+		}else if(nivel.equals("Levemente Ativo")){
 			comboAtividade.setSelectedIndex(1);
 			
-		}else if(sexo.equals("Moderamente Ativo")){
+		}else if(nivel.equals("Moderamente Ativo")){
 			comboAtividade.setSelectedIndex(2);
 			
-		}else if(sexo.equals("Bastante Ativo")){
+		}else if(nivel.equals("Bastante Ativo")){
 			comboAtividade.setSelectedIndex(3);
 			
 		}else{
 			comboAtividade.setSelectedIndex(4);
 		}
-		
-		
-		
+	}
+	
+	public void setRdSexo(String sexo){
+		if(sexo.equals("F")){
+			rdFeminino.setSelected(true);
+		}else if(sexo.equals("M")){
+			rdMasculino.setSelected(true);
+		}
+	}
+	public String getRdSexo(){
+		String sexo = "";
+		if(rdFeminino.isSelected()){
+			sexo="F";
+		}else if(rdMasculino.isSelected()){
+			sexo = "M";
+		}
+		return sexo;
 	}
 
 	public FrmCliente(String titulo) {
 		
-		setBounds(100, 100, 436, 612);
+		setBounds(100, 100, 423, 600);
 		painelPrincipal = new JPanel();
 		painelPrincipal.setBackground(new Color(0, 191, 255));
 		painelPrincipal.setForeground(Color.LIGHT_GRAY);
@@ -108,12 +138,13 @@ public class FrmCliente extends JFrame {
 		painelPrincipal.add(painelBotoes);
 		painelBotoes.setLayout(null);
 
-		JButton btnNovoContato = new JButton("");
-		btnNovoContato.setBackground(new Color(211, 211, 211));
-		btnNovoContato.setToolTipText("Salvar as informa\u00E7\u00F5es do cliente");
-		btnNovoContato.setIcon(new ImageIcon(FrmCliente.class.getResource("/br/senai/sp/jandira/imagens/save.png")));
-		btnNovoContato.setBounds(10, 11, 83, 47);
-		painelBotoes.add(btnNovoContato);
+		JButton btnSalvarContato = new JButton("");
+		
+		btnSalvarContato.setBackground(new Color(211, 211, 211));
+		btnSalvarContato.setToolTipText("Salvar as informa\u00E7\u00F5es do cliente");
+		btnSalvarContato.setIcon(new ImageIcon(FrmCliente.class.getResource("/br/senai/sp/jandira/imagens/save.png")));
+		btnSalvarContato.setBounds(10, 11, 83, 47);
+		painelBotoes.add(btnSalvarContato);
 
 		JButton btnSair = new JButton("");
 		btnSair.setBackground(new Color(211, 211, 211));
@@ -151,8 +182,15 @@ public class FrmCliente extends JFrame {
 		lblDataDeNascimento.setBounds(10, 52, 122, 14);
 		painelDados.add(lblDataDeNascimento);
 
-		JFormattedTextField txtDtNasc = new JFormattedTextField();
-		txtDtNasc.setText("/ /");
+		MaskFormatter formatoData = null;
+		try{
+			formatoData = new MaskFormatter("##/##/####");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		JFormattedTextField txtDtNasc = new JFormattedTextField(formatoData);
+		txtDtNasc.setText("");
 		txtDtNasc.setBounds(129, 49, 65, 20);
 		painelDados.add(txtDtNasc);
 
@@ -186,16 +224,20 @@ public class FrmCliente extends JFrame {
 		lblSexo.setBounds(169, 80, 39, 14);
 		painelDados.add(lblSexo);
 
-		JRadioButton rdFeminino = new JRadioButton("Feminino");
+		rdFeminino = new JRadioButton("Feminino");
 		rdFeminino.setBackground(new Color(220, 220, 220));
 		rdFeminino.setBounds(214, 76, 86, 23);
 		painelDados.add(rdFeminino);
 
-		JRadioButton rdMasculino = new JRadioButton("Masculino");
+		rdMasculino = new JRadioButton("Masculino");
 		rdMasculino.setBackground(new Color(220, 220, 220));
 		rdMasculino.setBounds(305, 76, 86, 23);
 		painelDados.add(rdMasculino);
-
+		
+		ButtonGroup grupoSexo = new ButtonGroup();
+		grupoSexo.add(rdFeminino);
+		grupoSexo.add(rdMasculino);
+			
 		JLabel lblNvelDeAtividade = new JLabel("N\u00EDvel de Atividade:");
 		lblNvelDeAtividade.setBounds(10, 130, 104, 14);
 		painelDados.add(lblNvelDeAtividade);
@@ -245,5 +287,44 @@ public class FrmCliente extends JFrame {
 		txtFMC.setBounds(302, 119, 86, 20);
 		painelResult.add(txtFMC);
 		txtFMC.setColumns(10);
+	
+		btnSalvarContato.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Cliente cliente = new Cliente();
+				
+				SimpleDateFormat toDate = new SimpleDateFormat("dd/MM/yyyy");
+				SimpleDateFormat toDataBase = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.000000");
+				
+				Date data = null;
+				String dataAccess = "";
+				
+				try{
+					data = toDate.parse(txtDtNasc.getText());
+					dataAccess = toDataBase.format(data);
+					ClienteDAO clienteDAO = new ClienteDAO();
+					
+					clienteDAO.setCliente(cliente);
+					cliente.setNome(txtNome.getText());
+					cliente.setAltura(txtAltura.getText());
+					cliente.setPeso(txtPeso.getText());
+					cliente.setDtNasc(dataAccess);
+					cliente.setSexo(getRdSexo());
+					cliente.setNvAtividade(comboAtividade.getSelectedItem().toString());
+					
+					if(lblOperacao.getText().equals("ADICIONAR")){
+						clienteDAO.GravarContato();
+					}else if(lblOperacao.getText().equals("EDITAR")){
+						
+					}else if(lblOperacao.getText().equals("EXCLUIR")){
+						
+					}
+					
+				}catch(Exception erro){
+					erro.printStackTrace();
+				}
+				
+				
+			}
+		});
 	}
 }

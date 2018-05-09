@@ -1,8 +1,10 @@
 package br.senai.sp.jandira.dao;
 
+import java.security.GeneralSecurityException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -72,6 +74,7 @@ public class ClienteDAO {
 	public Cliente getCliente(int id){
 		Cliente cliente = new Cliente();
 		
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		
 		String consulta = "SELECT * FROM cliente WHERE id = ?";
 		resultado = null;
@@ -89,6 +92,7 @@ public class ClienteDAO {
 			cliente.setPeso(resultado.getString("peso"));
 			cliente.setSexo(resultado.getString("sexo"));
 			cliente.setNvAtividade(resultado.getString("nvAtividade"));
+			cliente.setDtNasc(df.format(resultado.getDate("dtNasc")));
 			
 			Conexao.fecharConexao();
 		}catch(Exception erro){
@@ -100,5 +104,28 @@ public class ClienteDAO {
 		
 	}
 
-	
+	public void GravarContato(){
+		
+		String consulta = "INSERT INTO cliente (nome, altura, peso, dtNasc, sexo, nvAtividade) VALUES (?, ?, ?, ?, ? ,?)";
+		stm = null;
+		
+		try{
+			stm = Conexao.getConexao().prepareStatement(consulta);
+			stm.setString(1, cliente.getNome());
+			stm.setString(2, cliente.getAltura());
+			stm.setString(3, cliente.getPeso());
+			stm.setString(4, cliente.getDtNasc());
+			stm.setString(5, cliente.getSexo());
+			stm.setString(6, cliente.getNvAtividade());
+			stm.execute();
+			
+			JOptionPane.showMessageDialog(null, "Contato gravado com sucesso");
+			
+			Conexao.fecharConexao();
+			
+		}catch(Exception erro){
+			System.out.println(erro.getMessage());
+		}
+		
+	}
 }
