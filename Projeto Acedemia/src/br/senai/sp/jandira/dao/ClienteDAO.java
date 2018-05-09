@@ -92,7 +92,7 @@ public class ClienteDAO {
 			cliente.setPeso(resultado.getString("peso"));
 			cliente.setSexo(resultado.getString("sexo"));
 			cliente.setNvAtividade(resultado.getString("nvAtividade"));
-			cliente.setDtNasc(df.format(resultado.getDate("dtNasc")));
+			cliente.setDtNasc((df.format(resultado.getDate("dtNasc"))));
 			
 			Conexao.fecharConexao();
 		}catch(Exception erro){
