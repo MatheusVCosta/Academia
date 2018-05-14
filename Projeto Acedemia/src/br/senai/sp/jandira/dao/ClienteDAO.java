@@ -22,28 +22,9 @@ public class ClienteDAO {
 		this.cliente = cliente;
 	}
 	
-	public ResultSet getClintes(){
-		String conculta ="SELECT * FROM cliente";
-		resultado = null;
-		stm = null;
-		try{
-			
-		}catch (Exception erro){
-			try {
-				stm = Conexao.getConexao().prepareStatement(conculta);
-				resultado = stm.executeQuery();
-				
-				Conexao.fecharConexao();
-			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(null, "Ocorreu um erro na consulta", "ERRO", JOptionPane.ERROR_MESSAGE);
-				System.out.println(e.getMessage());
-			}
-		}
-		return resultado;
-	}
-	public ArrayList<Cliente> getListaCliente(){
+	public ArrayList<Cliente> getListaCliente(){//Criação do método getListaCliente
 		
-		ArrayList<Cliente> clientes = new ArrayList<>();
+		ArrayList<Cliente> clientes = new ArrayList<>();//criando o objeto cliente
 		String consulta = "SELECT * FROM cliente";
 		resultado = null;
 		stm = null;
@@ -74,6 +55,7 @@ public class ClienteDAO {
 	public Cliente getCliente(int id){
 		Cliente cliente = new Cliente();
 		
+		//**** DEFININDO O FORMATO DA DATA PARA O FORMATO BRASILEIRO
 		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		
 		String consulta = "SELECT * FROM cliente WHERE id = ?";
@@ -106,11 +88,11 @@ public class ClienteDAO {
 
 	public void GravarContato(){
 		
-		String consulta = "INSERT INTO cliente (nome, altura, peso, dtNasc, sexo, nvAtividade) VALUES (?, ?, ?, ?, ? ,?)";
+		String sql = "INSERT INTO cliente (nome, altura, peso, dtNasc, sexo, nvAtividade) VALUES (?, ?, ?, ?, ? ,?)";
 		stm = null;
 		
 		try{
-			stm = Conexao.getConexao().prepareStatement(consulta);
+			stm = Conexao.getConexao().prepareStatement(sql);
 			stm.setString(1, cliente.getNome());
 			stm.setString(2, cliente.getAltura());
 			stm.setString(3, cliente.getPeso());
@@ -124,8 +106,71 @@ public class ClienteDAO {
 			Conexao.fecharConexao();
 			
 		}catch(Exception erro){
+			JOptionPane.showMessageDialog(null, "Por favor preencha todos os campos!");
 			System.out.println(erro.getMessage());
 		}
 		
 	}
+	
+	public void atualizar(String id){
+		String sql = ("UPDATE cliente set nome = ?, altura = ?, peso = ?, dtNasc = ?, sexo = ?, nvAtividade = ? WHERE id = ?");
+		int Id = Integer.parseInt(id);
+		try{
+			stm = Conexao.getConexao().prepareStatement(sql);
+			
+			stm.setString(1, cliente.getNome());
+			stm.setString(2, cliente.getAltura());
+			stm.setString(3, cliente.getPeso());
+			stm.setString(4, cliente.getDtNasc());
+			stm.setString(5, cliente.getSexo());
+			stm.setString(6, cliente.getNvAtividade());
+			stm.setInt(7, Id);
+			
+			stm.execute();
+			
+			JOptionPane.showMessageDialog(null, "Cliente editado com sucesso", "Cliente Editado", JOptionPane.INFORMATION_MESSAGE );
+			Conexao.fecharConexao();
+		}
+		catch(Exception erro){
+			System.out.println(erro.getMessage());
+		}
+	}
+	
+	public void excluir (String id){
+		String sql = "DELETE FROM cliente WHERE id = ?";
+		int Id = Integer.parseInt(id);
+		try{
+			
+			stm = Conexao.getConexao().prepareStatement(sql);
+			
+			stm.setInt(1, Id);
+			
+			int result = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja apagar esse cliente?", "Aviso", JOptionPane.YES_NO_OPTION);
+			
+			if(result == 0){
+				JOptionPane.showMessageDialog(null, "O contato foi excluído com sucesso", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+				stm.execute();
+			}else{
+				JOptionPane.showMessageDialog(null, "O contato não excluído", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+			}
+			
+			Conexao.fecharConexao();
+		}
+		catch(Exception erro){
+			System.out.println(erro.getMessage());
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

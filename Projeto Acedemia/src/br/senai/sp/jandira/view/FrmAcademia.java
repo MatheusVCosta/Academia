@@ -11,6 +11,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import org.omg.CORBA.SystemException;
+
 import br.senai.sp.jandira.cliente.Cliente;
 import br.senai.sp.jandira.dao.ClienteDAO;
 
@@ -49,7 +51,7 @@ public class FrmAcademia extends JFrame {
 		painelPrincipal.add(painelTitulo);
 		painelTitulo.setLayout(null);
 		
-		JLabel lblTitulo = new JLabel("Academia");
+		JLabel lblTitulo = new JLabel("SMARTFAT");
 		lblTitulo.setBackground(new Color(0, 191, 255));
 		lblTitulo.setForeground(new Color(255, 255, 255));
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -92,30 +94,44 @@ public class FrmAcademia extends JFrame {
 		painelBotoes.setLayout(null);
 		
 		JButton btnNovoContato = new JButton("");
+		btnNovoContato.setToolTipText("Criar um novo cliente");
 		
 		btnNovoContato.setIcon(new ImageIcon(FrmAcademia.class.getResource("/br/senai/sp/jandira/imagens/add2.png")));
-		btnNovoContato.setBounds(10, 11, 83, 47);
+		btnNovoContato.setBounds(10, 11, 76, 47);
 		painelBotoes.add(btnNovoContato);
 		
 		JButton btnEditar = new JButton("");
+		btnEditar.setToolTipText("Editar cliente");
 		btnEditar.setIcon(new ImageIcon(FrmAcademia.class.getResource("/br/senai/sp/jandira/imagens/edit.png")));
 		
-		btnEditar.setBounds(103, 11, 83, 47);
+		btnEditar.setBounds(96, 11, 76, 47);
 		painelBotoes.add(btnEditar);
 		
 		JButton btnExcluir = new JButton("");
+		btnExcluir.setToolTipText("Excluir cliente\r\n");
 		btnExcluir.setIcon(new ImageIcon(FrmAcademia.class.getResource("/br/senai/sp/jandira/imagens/icancel.png")));
-		btnExcluir.setBounds(207, 11, 83, 47);
+		btnExcluir.setBounds(182, 11, 70, 47);
 		painelBotoes.add(btnExcluir);
 		
 		JButton btnSair = new JButton("");
+		
+		btnSair.setToolTipText("Fechar aplica\u00E7\u00E3o");
 		btnSair.setIcon(new ImageIcon(FrmAcademia.class.getResource("/br/senai/sp/jandira/imagens/sair.png")));
 		btnSair.setBounds(339, 11, 65, 47);
 		painelBotoes.add(btnSair);
 		
+		JButton btnUpdate = new JButton("");
+		
+		btnUpdate.setToolTipText("Atualizar tabela de clientes\r\n");
+		btnUpdate.setIcon(new ImageIcon(FrmAcademia.class.getResource("/br/senai/sp/jandira/imagens/update.png")));
+		btnUpdate.setSelectedIcon(new ImageIcon(FrmAcademia.class.getResource("/br/senai/sp/jandira/imagens/update.png")));
+		btnUpdate.setBounds(262, 11, 65, 47);
+		painelBotoes.add(btnUpdate);
+		
 		btnNovoContato.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				FrmCliente cliente = new FrmCliente("ADICIONAR");
+				cliente.setTitle("Adicionar");
 				cliente.setVisible(true);
 				cliente.setResizable(false);
 				
@@ -128,7 +144,18 @@ public class FrmAcademia extends JFrame {
 		});
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				FrmCliente cliente = new FrmCliente("Excluir");
+				mostrarCliente("EXCLUIR");
+			}
+		});
+		
+		btnSair.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				AtualizarTabela();
 			}
 		});
 	}
@@ -140,6 +167,41 @@ public class FrmAcademia extends JFrame {
 		
 		tabelaDados = new JTable();
 		
+		AtualizarTabela();
+		
+		scrollTabela.setViewportView(tabelaDados);
+		tabelaDados.setColumnSelectionAllowed(false);
+		
+	}
+	public void mostrarCliente(String titulo){
+		try{
+			FrmCliente frmCliente = new FrmCliente(titulo);
+			int linha = tabelaDados.getSelectedRow();
+			int id = (int) tabelaDados.getValueAt(linha, 0);
+			ClienteDAO clienteDAO = new ClienteDAO();
+			Cliente cliente = new Cliente();
+			
+			cliente = clienteDAO.getCliente(id);
+			
+			frmCliente.setTxtId(cliente.getId());
+			frmCliente.setTxtNome(cliente.getNome());
+			frmCliente.setTxtAltura(cliente.getAltura());
+			frmCliente.setTxtPeso(cliente.getPeso());
+			frmCliente.setComboAtividade(cliente.getNvAtividade());
+			frmCliente.setRdSexo(cliente.getSexo());
+			frmCliente.setTxtDtNasc(cliente.getDtNasc());
+			
+			
+			frmCliente.setTitle(titulo);
+			frmCliente.setVisible(true);
+			frmCliente.setResizable(false);
+			
+		}catch(Exception erro){
+			System.out.println(erro);
+			JOptionPane.showMessageDialog(null, "Por favor selecione um contato para editar", "Erro", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	public void AtualizarTabela(){
 		ArrayList<Cliente> clientes = new ArrayList<>();
 		ClienteDAO dao = new ClienteDAO();
 		clientes = dao.getListaCliente();
@@ -165,41 +227,10 @@ public class FrmAcademia extends JFrame {
 		
 		tabelaDados.getTableHeader().setReorderingAllowed(false);//TRAVAR A MOVIMENTÇÃO DAS COLUNAS
 		
-		tabelaDados.getColumnModel().getColumn(0).setPreferredWidth(10);
+		tabelaDados.getColumnModel().getColumn(0).setPreferredWidth(20);
 		tabelaDados.getColumnModel().getColumn(0).setResizable(false);
 		
-		tabelaDados.getColumnModel().getColumn(1).setPreferredWidth(230);
+		tabelaDados.getColumnModel().getColumn(1).setPreferredWidth(350);
 		tabelaDados.getColumnModel().getColumn(1).setResizable(false);
-		
-		scrollTabela.setViewportView(tabelaDados);
-		tabelaDados.setColumnSelectionAllowed(false);
-		
-	}
-	public void mostrarCliente(String titulo){
-		try{
-			FrmCliente frmCliente = new FrmCliente(titulo);
-			int linha = tabelaDados.getSelectedRow();
-			int id = (int) tabelaDados.getValueAt(linha, 0);
-			ClienteDAO clienteDAO = new ClienteDAO();
-			Cliente cliente = new Cliente();
-			
-			cliente = clienteDAO.getCliente(id);
-			
-			frmCliente.setTxtId(cliente.getId());
-			frmCliente.setTxtNome(cliente.getNome());
-			frmCliente.setTxtAltura(cliente.getAltura());
-			frmCliente.setTxtPeso(cliente.getPeso());
-			frmCliente.setComboAtividade(cliente.getNvAtividade());
-			frmCliente.setRdSexo(cliente.getSexo());
-			frmCliente.setTxtDtNasc(cliente.getDtNasc());
-			
-			frmCliente.setTitle(titulo);
-			frmCliente.setVisible(true);
-			frmCliente.setResizable(false);
-			
-		}catch(Exception erro){
-			System.out.println(erro);
-			JOptionPane.showMessageDialog(null, "Por favor selecione um contato para editar", "Erro", JOptionPane.ERROR_MESSAGE);
-		}
 	}
 }
