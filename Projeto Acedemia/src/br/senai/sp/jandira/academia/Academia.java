@@ -10,8 +10,7 @@ public class Academia {
 		academia.setVisible(true);
 		academia.setResizable(false);
 		
-//		ClienteDAO a = new ClienteDAO();
-//		a.getCliente(1);
+
 
 	}
 }
