@@ -56,7 +56,7 @@ public class FrmAcademia extends JFrame {
 		lblTitulo.setForeground(new Color(255, 255, 255));
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitulo.setIcon(new ImageIcon(FrmAcademia.class.getResource("/br/senai/sp/jandira/imagens/titulo.png")));
-		lblTitulo.setFont(new Font("Berlin Sans FB Demi", Font.PLAIN, 30));
+		lblTitulo.setFont(new Font("Berlin Sans FB Demi", Font.PLAIN, 31));
 		lblTitulo.setBounds(0, 0, 414, 77);
 		painelTitulo.add(lblTitulo);
 		
