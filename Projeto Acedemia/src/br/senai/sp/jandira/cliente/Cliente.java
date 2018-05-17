@@ -121,10 +121,10 @@ public class Cliente {
 
 	public double FMC(double idade, double peso) {
 		peso = peso/100;
-		if (sexo.equals("Homem")){
-			fcm = ((210-(0.5*idade))- peso) + 4;
-		}else{
+		if (sexo.equals("F")){
 			fcm = ((210-(0.5*idade))- peso);
+		}else{
+			fcm = ((210-(0.5*idade))- peso) + 4;
 		}
 		return fcm;
 	}

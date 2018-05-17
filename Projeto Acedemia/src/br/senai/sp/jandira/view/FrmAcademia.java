@@ -41,18 +41,18 @@ public class FrmAcademia extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 440, 540);
 		painelPrincipal = new JPanel();
-		painelPrincipal.setBackground(new Color(0, 191, 255));
+		painelPrincipal.setBackground(new Color(37, 183, 211));
 		painelPrincipal.setForeground(Color.LIGHT_GRAY);
 		painelPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(painelPrincipal);
 		painelPrincipal.setLayout(null);
-		painelTitulo.setBackground(new Color(0, 191, 255));
+		painelTitulo.setBackground(new Color(37, 183, 211));
 		painelTitulo.setBounds(10, 11, 414, 77);
 		painelPrincipal.add(painelTitulo);
 		painelTitulo.setLayout(null);
 		
 		JLabel lblTitulo = new JLabel("SMARTFAT");
-		lblTitulo.setBackground(new Color(0, 191, 255));
+		lblTitulo.setBackground(new Color(37, 183, 211));
 		lblTitulo.setForeground(new Color(255, 255, 255));
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitulo.setIcon(new ImageIcon(FrmAcademia.class.getResource("/br/senai/sp/jandira/imagens/titulo.png")));
@@ -190,6 +190,7 @@ public class FrmAcademia extends JFrame {
 			frmCliente.setComboAtividade(cliente.getNvAtividade());
 			frmCliente.setRdSexo(cliente.getSexo());
 			frmCliente.setTxtDtNasc(cliente.getDtNasc());
+			
 			
 			
 			frmCliente.setTitle(titulo);

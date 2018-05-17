@@ -48,6 +48,7 @@ public class FrmCliente extends JFrame {
 	private JRadioButton rdMasculino;
 	private JRadioButton rdFeminino;
 	private String sexo;
+	private JTextField txtIdade;
 	
 	public void setTxtDtNasc(String data){
 		this.txtDtNasc.setText(data);
@@ -113,18 +114,18 @@ public class FrmCliente extends JFrame {
 		Cliente cliente = new Cliente();
 		setBounds(100, 100, 423, 600);
 		painelPrincipal = new JPanel();
-		painelPrincipal.setBackground(new Color(0, 191, 255));
+		painelPrincipal.setBackground(new Color(37,183,211));
 		painelPrincipal.setForeground(Color.LIGHT_GRAY);
 		painelPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(painelPrincipal);
 		painelPrincipal.setLayout(null);
-		painelTitulo.setBackground(new Color(0, 191, 255));
+		painelTitulo.setBackground(new Color(37, 183, 211));
 		painelTitulo.setBounds(10, 11, 398, 78);
 		painelPrincipal.add(painelTitulo);
 		painelTitulo.setLayout(null);
 
 		JLabel lblOperacao = new JLabel(titulo);
-		lblOperacao.setBackground(new Color(0, 191, 255));
+		lblOperacao.setBackground(new Color(37,183,211));
 		lblOperacao.setHorizontalAlignment(SwingConstants.CENTER);
 		lblOperacao.setForeground(new Color(248, 248, 255));
 		lblOperacao.setIcon(new ImageIcon(FrmAcademia.class.getResource("/br/senai/sp/jandira/imagens/titulo.png")));
@@ -134,7 +135,7 @@ public class FrmCliente extends JFrame {
 
 		JPanel painelBotoes = new JPanel();
 		painelBotoes.setBackground(new Color(220, 220, 220));
-		painelBotoes.setBounds(10, 491, 398, 69);
+		painelBotoes.setBounds(10, 481, 398, 69);
 		painelPrincipal.add(painelBotoes);
 		painelBotoes.setLayout(null);
 
@@ -157,7 +158,7 @@ public class FrmCliente extends JFrame {
 
 		JPanel painelDados = new JPanel();
 		painelDados.setBackground(new Color(220, 220, 220));
-		painelDados.setBounds(10, 99, 398, 210);
+		painelDados.setBounds(10, 99, 398, 195);
 		painelPrincipal.add(painelDados);
 		painelDados.setLayout(null);
 
@@ -252,14 +253,14 @@ public class FrmCliente extends JFrame {
 			
 		JLabel lblNvelDeAtividade = new JLabel("N\u00EDvel de Atividade:");
 		lblNvelDeAtividade.setFont(new Font("Verdana", Font.PLAIN, 11));
-		lblNvelDeAtividade.setBounds(10, 130, 122, 14);
+		lblNvelDeAtividade.setBounds(10, 114, 122, 14);
 		painelDados.add(lblNvelDeAtividade);
 
 		comboAtividade = new JComboBox();
 		comboAtividade.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		comboAtividade.setModel(new DefaultComboBoxModel(new String[] { "Sedentário", "Levemente Ativo",
 				"Moderadamente Ativo", "Bastante Ativo", "Muito Ativo" }));
-		comboAtividade.setBounds(131, 128, 260, 20);
+		comboAtividade.setBounds(131, 111, 260, 20);
 		painelDados.add(comboAtividade);
 
 		JButton btnCalcular = new JButton("");
@@ -268,12 +269,23 @@ public class FrmCliente extends JFrame {
 		btnCalcular.setToolTipText("Calcular IMC, TMB e FCM");
 		btnCalcular
 				.setIcon(new ImageIcon(FrmCliente.class.getResource("/br/senai/sp/jandira/imagens/if_calc_42174.png")));
-		btnCalcular.setBounds(143, 158, 98, 41);
+		btnCalcular.setBounds(141, 142, 98, 41);
 		painelDados.add(btnCalcular);
+		
+		JLabel lblIdade = new JLabel("Idade:");
+		lblIdade.setFont(new Font("Verdana", Font.PLAIN, 11));
+		lblIdade.setBounds(10, 139, 46, 14);
+		painelDados.add(lblIdade);
+		
+		txtIdade = new JTextField();
+		txtIdade.setEditable(false);
+		txtIdade.setBounds(54, 137, 55, 20);
+		painelDados.add(txtIdade);
+		txtIdade.setColumns(10);
 
 		JPanel painelResult = new JPanel();
 		painelResult.setBackground(new Color(220, 220, 220));
-		painelResult.setBounds(10, 320, 398, 160);
+		painelResult.setBounds(10, 305, 398, 166);
 		painelPrincipal.add(painelResult);
 		painelResult.setLayout(null);
 
@@ -340,6 +352,7 @@ public class FrmCliente extends JFrame {
 					cliente.setPeso(txtPeso.getText());
 					cliente.setSexo(getRdSexo());
 					cliente.setNvAtividade(comboAtividade.getSelectedItem().toString());
+				
 					
 					if(lblOperacao.getText().equals("ADICIONAR")){
 						clienteDAO.GravarContato();
@@ -373,6 +386,7 @@ public class FrmCliente extends JFrame {
 				try{
 				double idade = calcularIdade();
 				
+				txtIdade.setText(String.valueOf(idade).substring(0,2));
 				cliente.setSexo(getRdSexo());
 				cliente.setNvAtividade(comboAtividade.getSelectedItem().toString());
 				//IMC
